@@ -1,13 +1,22 @@
-from flask import Flask
+from flask import Flask, render_template
+
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "Hello, World!"
-@app.route('/hola')
-def about():
-    return "Hola"
+@app.route('/index')
+def index():
+    titulo = "Pagina de Inicio"
+    listado = ['Python', 'Flask', 'Jinja2', 'HTML', 'CSS']
+    return render_template('index.html', titulo=titulo, listado=listado)
+
+@app.route('/calculos')
+def calculos():
+    return render_template('calculos.html')
+
+@app.route('/distancia')
+def distancia():
+    return render_template('distancia.html')
+
 @app.route('/user/<string:user>')
 def user(user):
     return f"Hola, {user}"
@@ -37,6 +46,21 @@ def func1(n1, n2):
 def func2(dft="sss"):
     return "El valor por defecto es:"+ dft 
 
+@app.route("/prueba")
+def func4():
+    return '''
+    <html>
+        <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+            <title>Página de prueba</title>
+        </head>
+        <body>
+            <h1>¡Hola, esta es una página de prueba!</h1>
+            <p> Esta es una pagina para probar el funcionamiento de Flask.</p>
+        </body>
+        <body>
+    </html>
+    '''
 
 if __name__== '__main__':
     app.run(debug=True)

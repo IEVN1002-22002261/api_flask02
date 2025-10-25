@@ -1,4 +1,5 @@
 from flask import Flask, render_template,request
+import forms
 import math
 
 
@@ -76,6 +77,21 @@ def func1(n1, n2):
 @app.route("/default/<string:dft>")
 def func2(dft="sss"):
     return "El valor por defecto es:"+ dft 
+
+@app.route("/alumnos", methods=['GET', 'POST'])
+def alumnos():
+    mat=0
+    nom=""
+    ape=""
+    ema=""
+    alumnos_clas=forms.UserForm(request.form)
+    if request.method == 'POST' and alumnos_clas.validate():
+        mat=alumnos_clas.matricula.data
+        nom=alumnos_clas.nombre.data
+        ape=alumnos_clas.apellido.data
+        ema=alumnos_clas.email.data
+    return render_template('alumnos.html', form=alumnos_clas, mat=mat, nom=nom, ape=ape, ema=ema)
+        
 
 @app.route("/prueba")
 def func4():

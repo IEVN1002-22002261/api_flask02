@@ -4,8 +4,8 @@
     <h1>Operas Bas</h1>
 
     <form action="" method="post">
-        {{datos_macro.datos('numero 1','Ingrese el numero 1')}}
-        {{datos_macro.datos('numero 2','Ingrese el numero 2')}}
+        {{datos_macro.datos('numero1','Ingrese el numero 1')}}
+        {{datos_macro.datos('numero2','Ingrese el numero 2')}}
 
         <div class="mb-3">
             <label for="operacion" class="form-label">Operacion</label>
@@ -17,6 +17,9 @@
             </select>
         </div>
 
-        <buttont type="submit" class="btn btn-primary">Calcular</buttont>
-
+        <button type="submit" class="btn btn-primary">Calcular</button>
+        </form>
+        <h1>
+            La operacionx de {{numero1}} + {{numero2}} = {{res}}
+        </h1>
     {%endblock%}

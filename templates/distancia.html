@@ -1,4 +1,17 @@
 {%extends "layout.html"%}
+    {%import "_macros.html" as datos_macro%}
     {%block container%}
     <h1>Distancia</h1>
-    {%endblock%}
+    <form action="/distancia" method="post">
+            {{datos_macro.datos('x1','Ingrese X1')}}
+            {{datos_macro.datos('y1','Ingrese Y1')}}
+            {{datos_macro.datos('x2','Ingrese X2')}}
+            {{datos_macro.datos('y2','Ingrese Y2')}}
+
+            <button type="submit" class="btn btn-primary">Calcular</button>
+    </form>
+  {% if res is not none %}
+  <h2>La distancia entre ({{x1}}, {{y1}}) y ({{x2}}, {{y2}}) es: {{res}}</h2>
+{% endif %}
+{% endblock %}
+

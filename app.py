@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,request
+import math
 
 
 app = Flask(__name__)
@@ -9,13 +10,43 @@ def index():
     listado = ['Python', 'Flask', 'Jinja2', 'HTML', 'CSS']
     return render_template('index.html', titulo=titulo, listado=listado)
 
-@app.route('/calculos')
+@app.route('/calculos', methods=['GET', 'POST'])
 def calculos():
-    return render_template('calculos.html')
+    
+    res = 0
+    numero1 = 0
+    numero2 = 0
+    if request.method == 'POST':
+        numero1 = float(request.form['numero1'])
+        numero2 = float(request.form['numero2'])
+        opcion = request.form['operacion']
+        if opcion == 'suma':
+            res= int(numero1) + int(numero2)
+        if opcion == 'resta':
+            res= int(numero1) - int(numero2)
+        if opcion == 'multiplicacion':
+            res= int(numero1) * int(numero2)
+        if opcion == 'division':
+            res = numero1 / numero2 if numero2 != 0 else "Error: división por cero"
 
-@app.route('/distancia')
+    return render_template('calculos.html', res=res, numero1=numero1, numero2=numero2)
+
+@app.route('/distancia', methods=['GET', 'POST'])
 def distancia():
-    return render_template('distancia.html')
+    res = None
+    x1 = y1 = x2 = y2 = 0
+
+    if request.method == 'POST':
+        x1 = float(request.form['x1'])
+        y1 = float(request.form['y1'])
+        x2 = float(request.form['x2'])
+        y2 = float(request.form['y2'])
+  
+        dx = x2 - x1
+        dy = y2 - y1
+        res = math.sqrt(dx * dx + dy * dy)
+ 
+    return render_template('distancia.html', res=res, x1=x1, y1=y1, x2=x2, y2=y2)
 
 @app.route('/user/<string:user>')
 def user(user):

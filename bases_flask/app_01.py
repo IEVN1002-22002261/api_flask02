@@ -1,4 +1,5 @@
 from flask import Flask, render_template,request
+from flask import make_response, jsonify,json
 import forms
 import math
 
@@ -84,15 +85,46 @@ def alumnos():
     nom=""
     ape=""
     ema=""
+    tem=[]
+    estudiantes=[]
+    datos={}
+
     alumnos_clas=forms.UserForm(request.form)
     if request.method == 'POST' and alumnos_clas.validate():
+        if request.form.get("btnElimina")=='eliminar':
+            response = make_response(render_template('Alumnos.html',))
+            response.delete_cookie('usuario')
+
         mat=alumnos_clas.matricula.data
         nom=alumnos_clas.nombre.data
         ape=alumnos_clas.apellido.data
         ema=alumnos_clas.email.data
-    return render_template('alumnos.html', form=alumnos_clas, mat=mat, nom=nom, ape=ape, ema=ema)
-        
 
+        datos={'matricula':mat,'nombre':nom.rstrip(),
+               'apellido':ape.rstrip(),'email':ema.rstrip()}  
+        data_str = request.cookies.get("usuario")
+        if not data_str:
+             return "No hay cookie guardada", 404
+        estudiantes = json.loads(data_str)
+        estudiantes.append(datos)  
+    response=make_response(render_template('Alumnos.html',
+            form=alumnos_clas, mat=mat, nom=nom, apell=ape, email=ema))
+
+    if request.method!='GET':
+        response.set_cookie('usuario',json.dumps(tem))
+    return response
+
+@app.route("/get_cookie")
+def get_cookie():
+     
+    data_str = request.cookies.get("usuario")
+    if not data_str:
+        return "No hay cookie guardada", 404
+ 
+    estudiantes = json.loads(data_str)
+ 
+    return jsonify(estudiantes)
+        
 @app.route("/prueba")
 def func4():
     return '''
